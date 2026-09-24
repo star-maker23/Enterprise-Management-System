@@ -1,0 +1,47 @@
+# ==================== 通用 ====================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# ==================== 前端 AgileBoot-Front-End ====================
+AgileBoot-Front-End/node_modules/
+AgileBoot-Front-End/dist/
+AgileBoot-Front-End/.vite/
+AgileBoot-Front-End/package-lock.json
+AgileBoot-Front-End/pnpm-debug.log*
+AgileBoot-Front-End/yarn-debug.log*
+AgileBoot-Front-End/yarn-error.log*
+
+# ==================== 后端 AgileBoot-Back-End ====================
+AgileBoot-Back-End-main/**/target/
+AgileBoot-Back-End-main/**/*.class
+AgileBoot-Back-End-main/**/*.jar
+AgileBoot-Back-End-main/**/*.war
+AgileBoot-Back-End-main/.idea/
+AgileBoot-Back-End-main/.mvn/
+AgileBoot-Back-End-main/**/log.path_IS_UNDEFINED/
+AgileBoot-Back-End-main/**/*.log
+
+# ==================== Maven ====================
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# ==================== 根目录缓存 ====================
+.pnpm-store/
+*.local
+.env.local
+.env.*.local
+
+# ==================== IDE ====================
+*.bak
+*.orig
+*.rej
+*~
