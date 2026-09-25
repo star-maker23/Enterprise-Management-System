@@ -29,6 +29,17 @@ Enterprise-Management-System/
     └── ems-api/             # API 定义
 ```
 
+## 技术与架构亮点
+
+- **CQRS + DDD 分层**：后端按 `ems-admin`（接口）/ `ems-api`（应用）/ `ems-domain`（领域）/ `ems-infrastructure`（基础设施）四模块划分，Command / Query / DTO 职责分离，新增业务模块可直接按此范式扩展
+- **RBAC 按钮级权限**：菜单-角色-用户三级模型，前端动态路由按菜单数据生成，接口层 `@PreAuthorize` 校验到按钮粒度（查询/新增/修改/删除独立授权）
+- **JWT 无状态认证**：`JwtTokenService` 签发与校验，Redis 存储会话状态，支持多端登录互踢
+- **注解式接口限流**：自定义 `@RateLimit` 注解 + AOP，提供 Redis（分布式）/ Map（单机）双策略实现，按需切换
+- **纵深安全防护**：Jackson 层 XSS 过滤（JSON 出入参自动转义）、Excel 导入 TrimXss、全局异常处理、统一参数校验
+- **AOP 操作审计**：操作日志 / 登录日志自动落库（`sys_operation_log` / `sys_login_info`），业务代码零侵入
+- **多数据库 + 一键启动**：MySQL / PostgreSQL / H2 三套脚本，H2 内嵌模式下零外部依赖启动，便于演示与测试
+- **前端工程化**：Vue3 + TS + Pinia 动态路由菜单、多标签页缓存、按钮权限指令、暗黑模式
+
 ## 技术栈
 
 ### 后端
