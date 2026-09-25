@@ -1,0 +1,7 @@
+Application Version: ${revision}
+Spring Boot Version: ${spring-boot.version}
+ _____ __  __ ____
+| ____|  \/  / ___|
+|  _| | |\/| \___ \
+| |___| |  | |___) |
+|_____|_|  |_|____/

@@ -12,20 +12,21 @@
 ## 项目结构
 
 ```
-agilboot/
-├── AgileBoot-Front-End/              # 前端项目（Vue3 + Vite + Element Plus）
+Enterprise-Management-System/
+├── Enterprise-Management-System-Front-End/    # 前端项目（Vue3 + Vite + Element Plus）
 │   └── src/
 │       ├── api/system/               # API 接口
 │       ├── views/system/asset/       # 资产管理页面
 │       └── ...
-└── AgileBoot-Back-End-main/          # 后端项目（Spring Boot + MyBatis-Plus）
-    └── AgileBoot-Back-End-main/
-        ├── ems-admin/           # 启动模块 + Controller 层
-        ├── ems-domain/          # 领域层（Entity/Model/Service/DTO/Query/Command）
-        ├── ems-infrastructure/ # 基础设施（MyBatis/安全/缓存/日志）
-        ├── ems-common/          # 公共组件（枚举/工具/异常）
-        ├── ems-api/             # API 定义
-        └── sql/                       # 数据库初始化脚本
+└── Enterprise-Management-System-End-main/     # 后端项目（Spring Boot + MyBatis-Plus）
+    ├── ems-admin/           # 启动模块 + Controller 层
+    ├── ems-domain/          # 领域层（Entity/Model/Service/DTO/Query/Command）
+    ├── ems-infrastructure/  # 基础设施（MyBatis/安全/缓存/日志）
+    │   └── src/main/resources/
+    │       ├── h2sql/       # H2 种子脚本（schema + data）
+    │       └── pgsql/       # PostgreSQL 种子脚本（schema + data）
+    ├── ems-common/          # 公共组件（枚举/工具/异常）
+    └── ems-api/             # API 定义
 ```
 
 ## 技术栈
@@ -47,7 +48,7 @@ agilboot/
 ### 后端
 
 ```bash
-cd AgileBoot-Back-End-main/AgileBoot-Back-End-main
+cd Enterprise-Management-System-End-main
 ./mvnw.cmd spring-boot:run -pl ems-admin "-Dspring-boot.run.profiles=basic,dev"
 # 默认端口 http://localhost:8080
 ```
@@ -56,7 +57,7 @@ cd AgileBoot-Back-End-main/AgileBoot-Back-End-main
 
 ```bash
 # application.yml 中设置
-agileboot:
+ems:
   embedded:
     mysql: true
     redis: true
@@ -67,7 +68,7 @@ agileboot:
 ### 前端
 
 ```bash
-cd AgileBoot-Front-End
+cd Enterprise-Management-System-Front-End
 pnpm install
 pnpm dev
 # 默认端口 http://localhost:3000
@@ -77,15 +78,19 @@ pnpm dev
 
 ### 数据库初始化
 
-MySQL 执行 `sql/ems-20260924.sql`，完成建表和初始数据（菜单、权限、字典等）。
+种子脚本位于 `Enterprise-Management-System-End-main/ems-infrastructure/src/main/resources/` 下：
 
-PostgreSQL 执行 `ems-infrastructure/src/main/resources/pgsql/` 下的两个文件。
+- **PostgreSQL**：执行 `pgsql/ems_schema.sql` + `pgsql/ems_data.sql`
+- **H2（内置模式启动时自动加载）**：`h2sql/` 下两个文件，无需手动执行
+- **MySQL**：仓库暂未提供现成初始化脚本，可参照 `h2sql/` 中的表结构转写为 MySQL 语法执行
+
+> 资产管理模块的 `sys_asset` 建表与菜单（66-70）脚本暂未收录到仓库，两种数据库均需自行建表并插入菜单数据。
 
 ---
 
 ## 本次改动：资产管理模块
 
-### 后端（15 个新增文件 + 1 个修改）
+### 后端（14 个新增文件 + 1 个修改）
 
 | 层 | 文件 | 作用 |
 |---|---|---|
@@ -111,7 +116,9 @@ PostgreSQL 执行 `ems-infrastructure/src/main/resources/pgsql/` 下的两个文
 | `src/views/system/asset/utils/rule.ts` | 表单校验规则 |
 | `src/views/system/asset/utils/types.ts` | TypeScript 类型定义 |
 
-### 数据库（3 套 SQL 均已更新）
+### 数据库设计
+
+> 以下 `sys_asset` 建表与菜单脚本暂未收录到仓库种子 SQL，需在数据库中自行执行。
 
 - **sys_asset 表**：asset_id / asset_name / asset_code / asset_type / status / owner / purchase_date / price / remark / creator / create_time ...
 - **菜单**（menu_id 66-70）：
